@@ -19,7 +19,6 @@ func main() {
 		findFunctions(file, scanner)
 	} else {
 		findFunctions(file, scanner)
-		// log.Fatalln("Package is main!")
 	}
 }
 
