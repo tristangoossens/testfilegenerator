@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	file, err := os.Open("fakepackage.go")
+	file, err := os.Open("fakepackage.go") //Filename
 	if err != nil {
 		log.Fatalf("Error opening file: '%s'", err)
 	}
