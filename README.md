@@ -3,4 +3,4 @@ This is a small project of [Jeremytjuh](https://github.com/Jeremytjuh "Jeremytju
 In this project we wanted to automatically generate the barebone test for a package
 
 ## Why?
-We thought it would be an interesting and perhaps useful project to make
+We thought it would be an interesting and perhaps useful project to make!
