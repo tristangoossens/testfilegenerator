@@ -12,7 +12,7 @@ import (
 var breakPackageScan bool
 
 func main() {
-	file, err := os.Open("fakepackage.go")
+	file, err := os.Open("fakepackage.go") // Enter your package file name here!
 	if err != nil {
 		log.Fatalf("Error opening file: '%s'", err)
 	}
