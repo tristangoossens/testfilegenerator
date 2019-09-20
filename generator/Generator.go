@@ -69,35 +69,80 @@ func findFunctions(file io.Reader) []string {
 	return xfunc
 }
 
-func generateTestFile(pkgname string, functions []string) {
-	filename := pkgname + "_test.go"
+func generateTestFile(packagename string, functions []string) {
+	filename := packagename + "_test.go"
 	_, err := os.Stat(filename)
 	if err != nil {
-		file, err := os.Create(filename)
-		if err != nil {
-			log.Fatalln("Error creating test file:", err)
+		generateNewTestFile(filename, packagename, functions)
+	} else {
+		fmt.Printf("File already exists, do you want to overwrite it? WARNING: THIS ACTION IS IRREVERSIBLE\nYes or No? ")
+		scanner := bufio.NewScanner(os.Stdin)
+	Loop:
+		for scanner.Scan() {
+			switch strings.ToLower(scanner.Text()) {
+			case "yes":
+				overwriteOldTestFile(filename, packagename, functions)
+				break Loop
+			case "no":
+				log.Fatalln("Quitting program: chose no")
+			default:
+				log.Fatalln("Quitting program: invalid command")
+			}
 		}
-		string1 := `
+	}
+}
+
+func generateNewTestFile(filename, packagename string, functions []string) {
+	file, err := os.Create(filename)
+	if err != nil {
+		log.Fatalf("Error creating file \"%s\":", filename, err)
+	}
+	imports := `
         
 import (
     "testing"
 )
 `
 
-		file.WriteString(fmt.Sprintf("package %s %s", pkgname, string1))
+	file.WriteString(fmt.Sprintf("package %s %s", packagename, imports))
 
-		for _, v := range functions {
-			file.WriteString("\nfunc Test" + v + "(t *testing.Testing){\n\n}\n")
-		}
-
-		for _, v := range functions {
-			file.WriteString("\nfunc Example" + v + "(){\n\n}\n")
-		}
-
-		for _, v := range functions {
-			file.WriteString("\nfunc Benchmark" + v + "(b *testing.B){\n\tfor i := 0; i < b.N; i++ {\n\t\t" + v + "()\t//Enter the values that your function needs between the parentheses\n\t}\n}")
-		}
-	} else {
-		log.Fatalf("File with name %s already exists!", filename)
+	for _, v := range functions {
+		file.WriteString("\nfunc Test" + v + "(t *testing.Testing){\n\n}\n")
 	}
+
+	for _, v := range functions {
+		file.WriteString("\nfunc Example" + v + "(){\n\n}\n")
+	}
+
+	for _, v := range functions {
+		file.WriteString("\nfunc Benchmark" + v + "(b *testing.B){\n\tfor i := 0; i < b.N; i++ {\n\t\t" + v + "()\t//Enter the values that your function needs between the parentheses\n\t}\n}")
+	}
+	fmt.Printf("Succesfully generated new test file called: %s\n", filename)
+}
+
+func overwriteOldTestFile(filename, packagename string, functions []string) {
+	file, err := os.OpenFile(filename, os.O_RDWR, 0755)
+	if err != nil {
+		log.Fatalf("Error opening %s")
+	}
+	imports := `
+        
+import (
+    "testing"
+)
+`
+	file.WriteString(fmt.Sprintf("package %s %s", packagename, imports))
+
+	for _, v := range functions {
+		file.WriteString("\nfunc Test" + v + "(t *testing.Testing){\n\n}\n")
+	}
+
+	for _, v := range functions {
+		file.WriteString("\nfunc Example" + v + "(){\n\n}\n")
+	}
+
+	for _, v := range functions {
+		file.WriteString("\nfunc Benchmark" + v + "(b *testing.B){\n\tfor i := 0; i < b.N; i++ {\n\t\t" + v + "()\t//Enter the values that your function needs between the parentheses\n\t}\n}")
+	}
+	fmt.Printf("Succesfully generated new test file called: %s\n", filename)
 }
