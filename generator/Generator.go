@@ -70,28 +70,34 @@ func findFunctions(file io.Reader) []string {
 }
 
 func generateTestFile(pkgname string, functions []string) {
-	file, err := os.Create(pkgname + "_test.go")
+	filename := pkgname + "_test.go"
+	_, err := os.Stat(filename)
 	if err != nil {
-		log.Fatalln("Error creating test file:", err)
-	}
-	string1 := `
+		file, err := os.Create(filename)
+		if err != nil {
+			log.Fatalln("Error creating test file:", err)
+		}
+		string1 := `
         
 import (
     "testing"
 )
 `
 
-	file.WriteString(fmt.Sprintf("package %s %s", pkgname, string1))
+		file.WriteString(fmt.Sprintf("package %s %s", pkgname, string1))
 
-	for _, v := range functions {
-		file.WriteString("\nfunc Test" + v + "(t *testing.Testing){\n\n}\n")
-	}
+		for _, v := range functions {
+			file.WriteString("\nfunc Test" + v + "(t *testing.Testing){\n\n}\n")
+		}
 
-	for _, v := range functions {
-		file.WriteString("\nfunc Example" + v + "(){\n\n}\n")
-	}
+		for _, v := range functions {
+			file.WriteString("\nfunc Example" + v + "(){\n\n}\n")
+		}
 
-	for _, v := range functions {
-		file.WriteString("\nfunc Benchmark" + v + "(b *testing.B){\n\tfor i := 0; i < b.N; i++ {\n\t\t" + v + "()\t//Enter the values that your function needs between the parentheses\n\t}\n}")
+		for _, v := range functions {
+			file.WriteString("\nfunc Benchmark" + v + "(b *testing.B){\n\tfor i := 0; i < b.N; i++ {\n\t\t" + v + "()\t//Enter the values that your function needs between the parentheses\n\t}\n}")
+		}
+	} else {
+		log.Fatalf("File with name %s already exists!", filename)
 	}
 }

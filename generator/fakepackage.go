@@ -1,19 +1,27 @@
-// This is
-// a lot
-// of commenting
-// to test the code
-package mai
+package calculator
 
 import ()
 
-func lowerFunc() {
+func startCalculator() {
 
 }
 
-func UpperFunc() {
+func Add() {
 
 }
 
-func UpperFunc2(s string) {
+func Subtract() {
+
+}
+
+func Multiply() {
+
+}
+
+func Divide() {
+
+}
+
+func exitCalculator() {
 
 }
