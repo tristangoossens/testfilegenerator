@@ -75,7 +75,7 @@ func generateTestFile(packagename string, functions []string) {
 	if err != nil {
 		generateNewTestFile(filename, packagename, functions)
 	} else {
-		fmt.Printf("File already exists, do you want to overwrite it? WARNING: THIS ACTION IS IRREVERSIBLE\nYes or No? ")
+		fmt.Printf("File %s already exists, do you want to overwrite it? WARNING: THIS ACTION IS IRREVERSIBLE\nYes or No? ", filename)
 		scanner := bufio.NewScanner(os.Stdin)
 	Loop:
 		for scanner.Scan() {
@@ -95,7 +95,7 @@ func generateTestFile(packagename string, functions []string) {
 func generateNewTestFile(filename, packagename string, functions []string) {
 	file, err := os.Create(filename)
 	if err != nil {
-		log.Fatalf("Error creating file \"%s\":", filename, err)
+		log.Fatalf("Error creating file \"%s\": %v", filename, err)
 	}
 	imports := `
         
@@ -123,7 +123,7 @@ import (
 func overwriteOldTestFile(filename, packagename string, functions []string) {
 	file, err := os.OpenFile(filename, os.O_RDWR, 0755)
 	if err != nil {
-		log.Fatalf("Error opening %s")
+		log.Fatalf("Error opening %s", err)
 	}
 	imports := `
         

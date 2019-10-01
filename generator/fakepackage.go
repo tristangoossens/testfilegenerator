@@ -1,27 +1,19 @@
-package calculator
+package blabla
 
 import ()
 
-func startCalculator() {
+func lowerFunc() {
+	// package main
+}
+
+func UpperFunc() {
+	//Test
+}
+
+func bla() {
 
 }
 
-func Add() {
-
-}
-
-func Subtract() {
-
-}
-
-func Multiply() {
-
-}
-
-func Divide() {
-
-}
-
-func exitCalculator() {
-
+func Bla() error {
+	return nil
 }
