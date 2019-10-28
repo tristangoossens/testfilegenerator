@@ -9,8 +9,6 @@ import (
 	"strings"
 )
 
-var breakPackageScan bool
-
 func main() {
 	file, err := os.Open("fakepackage.go") // Enter your package file name here!
 	if err != nil {
